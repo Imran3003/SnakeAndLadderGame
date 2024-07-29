@@ -1,0 +1,51 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.snakeAndLadderBoard {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-gap: 0.5px;
+}
+
+.snakeAndLadder {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    font-size: 15px;
+    font-weight: bold;
+    /*padding-right: 5px;*/
+}
+
+#h3 {
+    position: relative;
+    top: 100px;
+    left: 160px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+
+}
+
+i
+{
+    font-size: 25px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.fa-user::before {
+    -webkit-text-stroke: 2px black; /* Border thickness and color */
+}
+.fa-user
+{
+    z-index: 5;
+}

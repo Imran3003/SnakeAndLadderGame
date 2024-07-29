@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>snakeAndLadder</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v6.0.0-beta3/css/all.css">
+    <link rel="stylesheet" href="/css/snakeAndLadder.css">
+    <link rel="stylesheet" href="/css/dize.css">
+    <style>
+        .main {
+            position: relative;
+            width: 610px;
+            height: 600px;
+        }
+        #myCanvas {
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+        .canvas-container,
+        .snakeAndLadderBoard {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .canvas-container {
+            z-index: 2;
+        }
+        .snakeAndLadderBoard {
+            border: 2px solid black;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="canvas-container">
+        <canvas id="myCanvas"></canvas>
+    </div>
+    <div class="snakeAndLadderBoard" th:utext="${snakeAndLadderHtml}"></div>
+</div>
+<div class="dice-main">
+    <div class="dice" id="dice">
+        <div class="face front" onclick="diceClick()"><img src="/images/dices/dice1.png" alt="Dice 1" value="1"></div>
+        <div class="face back" onclick="diceClick()"><img src="/images/dices/dice6.png" alt="Dice 6" value="6"></div>
+        <div class="face right" onclick="diceClick()"><img src="/images/dices/dice2.png" alt="Dice 2" value="2"></div>
+        <div class="face left" onclick="diceClick()"><img src="/images/dices/dice4.png" alt="Dice 4" value="4"></div>
+        <div class="face top" onclick="diceClick()"><img src="/images/dices/dice3.png" alt="Dice 3" value="3"></div>
+        <div class="face bottom" onclick="diceClick()"><img src="/images/dices/dice5.png" alt="Dice 5" value="5"></div>
+    </div>
+</div>
+<h3 id="h3">PLAYER-1</h3>
+<script th:utext="${ladderAndSnakeHtml}"></script>
+<script src="/js/snakeAndLadder.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById('myCanvas');
+        const context = canvas.getContext('2d');
+
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+
+        const lineOffset = 3; // Offset for double line
+        const dotRadius = 5; // Radius of dots
+
+        const ladderImg = new Image();
+        ladderImg.src = '/images/ladder.png'; // Replace with your image path
+
+        const snakeImg = new Image();
+        snakeImg.src = '/images/snake.png'; // Replace with your image path
+
+        let imagesLoaded = 0;
+        const totalImages = 2;
+
+        function checkImagesLoaded() {
+            imagesLoaded++;
+            if (imagesLoaded === totalImages) {
+                drawLinesAndImages();
+            }
+        }
+
+        ladderImg.onload = checkImagesLoaded;
+        snakeImg.onload = checkImagesLoaded;
+
+        function drawImageOnLine(x1, y1, x2, y2, type) {
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const length = Math.sqrt(dx * dx + dy * dy);
+
+            const correctionFactor = Math.PI / 180;  // Adjust this value as needed
+            const angle = Math.atan2(dy, dx) - correctionFactor;
+
+            const image = type === "ladder" ? ladderImg : snakeImg;
+
+            const imageWidth = 80;
+            const imageHeight = length;
+
+            context.save();
+
+            context.translate(x1, y1);
+
+            context.rotate(angle);
+
+            context.drawImage(image, -imageWidth / 2 + 40, -40, imageHeight, imageWidth);
+
+            context.restore();
+        }
+
+
+        function drawLinesAndImages()
+        {
+            console.log("Ladders = ",ladders)
+
+            ladders.forEach(ladder => {
+                const point1 = document.getElementById(ladder.start);
+                const point2 = document.getElementById(ladder.end);
+
+                if (point1 && point2) {
+                    const point1Rect = point1.getBoundingClientRect();
+                    const point2Rect = point2.getBoundingClientRect();
+
+                    const canvasRect = canvas.getBoundingClientRect();
+
+                    const x1 = point1Rect.left + point1Rect.width / 2 - canvasRect.left;
+                    const y1 = point1Rect.top + point1Rect.height / 2 - canvasRect.top;
+
+                    const x2 = point2Rect.left + point2Rect.width / 2 - canvasRect.left;
+                    const y2 = point2Rect.top + point2Rect.height / 2 - canvasRect.top;
+
+                    drawImageOnLine(x1, y1, x2, y2, ladder.is); // Draw images on the lines
+                }
+                else
+                {
+                    console.error(`Ladder start or end not found: ${ladder.start} -> ${ladder.end}`);
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

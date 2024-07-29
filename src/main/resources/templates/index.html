@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Number of Players</title>
+    <!-- Updated Font Awesome CDN link -->
+    <link rel="stylesheet" href="/css/board.css">
+
+    <script src="/js/snakeAndLadder.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="square" onclick="selectPlayers(2)">
+        <i class="fa-solid fa-user-group"></i>        2 Players
+    </div>
+    <div class="square" onclick="selectPlayers(3)">
+        <i class="fas fa-user-friends"></i><i class="fas fa-user"></i>
+        3 Players
+    </div>
+    <div class="square" onclick="selectPlayers(4)">
+        <i class="fas fa-users"></i>
+        4 Players
+    </div>
+    <div class="square" onclick="selectPlayers(5)">
+        <i class="fas fa-users"></i><i class="fas fa-user"></i>
+        5 Players
+    </div>
+</div>
+</body>
+</html>
