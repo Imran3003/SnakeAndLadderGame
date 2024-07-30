@@ -1,14 +1,12 @@
 let player = 1;
 
 async function selectPlayers(number) {
-    console.log("Number = ", number);
     localStorage.setItem('numberOfPlayers', number); // Store number of players in local storage
     window.location.href = "/selectNumberOfPlayers?numberOfPlayers=" + number;
 }
 
 async function diceClick() {
     let numberOfPlayers = localStorage.getItem('numberOfPlayers');
-    console.log("Number of Players:", numberOfPlayers);
 
     const dice = document.getElementById('dice');
     if (!dice) {
@@ -30,12 +28,9 @@ async function diceClick() {
     // Apply the specific rotation after a delay to ensure it appears as a separate rotation
     setTimeout(() => {
         dice.style.transform = `rotateX(${specificRotation.x}deg) rotateY(${specificRotation.y}deg)`;
-        console.log("Dice Value = ", diceValue, " :: Rotation Angles = ", specificRotation);
     }, 500);
 
     setTimeout(async () => {
-        console.log("Inside setTimeout block");
-
         if (player > numberOfPlayers) {
             player = 1;
         }
@@ -55,12 +50,6 @@ async function diceClick() {
         let fromPosition = response.playerFromPosition;
         let toValue = response.playerPosition;
 
-        // Add more debugging logs
-        console.log("Dice Value:", diceValue);
-        console.log("Player From Position:", fromPosition);
-        console.log("Player Position (toValue):", toValue);
-        console.log("Type of toValue:", typeof toValue);
-
         // Convert toValue to a number
         toValue = Number(toValue);
 
@@ -70,7 +59,6 @@ async function diceClick() {
         }
 
         if (toValue  === 100) {
-            console.log("toValue");
             gameOver(player);
             return;
         }
@@ -97,7 +85,6 @@ async function diceClick() {
 
         setTimeout(() => {
             toPosition.appendChild(coin);
-            console.log("To position after change = ", toPosition);
         }, 900);
 
         player++;
@@ -122,14 +109,11 @@ async function generateRandomDizeValue() {
 
 async function passValueToAPI(value, player) {
     try {
-        console.log(`Fetching API with result=${value} and playerNum=${player}`);
         const response = await fetch(`/rotateDize?result=${value}&playerNum=${player}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        const result = await response.json();
-        console.log("API Response:", result);
-        return result;
+        return await response.json();
     } catch (error) {
         console.error('Error in passValueToAPI:', error);
         return { playerPosition: 0 }; // Ensure fallback value
@@ -155,24 +139,10 @@ function getRandomRotation() {
 }
 
 function gameOver(winningPlayer) {
-    console.log("Function gameOver called");
-    fetch(`/GameOver?player=${encodeURIComponent(winningPlayer)}`, {
-        method: 'GET', // Use 'POST' if your API requires a POST request
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json(); // or response.text() or other methods depending on your API response
-        })
-        .then(data => {
-            console.log('Success:', data);
-            // Handle the data received from the API
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    console.log("*** Game Over ***");
+    window.location.href = `/GameOver?player=${encodeURIComponent(winningPlayer)}`;
 }
+
+
+
+

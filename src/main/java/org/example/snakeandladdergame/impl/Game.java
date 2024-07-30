@@ -79,7 +79,7 @@ public class Game
         // Calculate the column
 //        int column = row % 2 !=0 ? (playerToPosition - 1) % 10 : 10 - ((playerToPosition % 10) == 0 ? 1 : playerToPosition % 10);
 
-        int column = 0;
+        int column;
 
         if (row % 2 == 0)
         {

@@ -107,6 +107,7 @@ public class Utils
         StringBuilder coins = new StringBuilder();
 
         String colour = "yellow";
+
         for (int i = 1; i <= numberOfPlayers; i++)
         {
             if (i == 2) {

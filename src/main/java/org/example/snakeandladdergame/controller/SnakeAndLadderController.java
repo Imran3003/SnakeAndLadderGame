@@ -13,6 +13,7 @@ import java.util.List;
 
 import static org.example.snakeandladdergame.impl.Game.initailizePlayers;
 import static org.example.snakeandladdergame.impl.Game.startGame;
+import static org.example.snakeandladdergame.utils.Utils.playerCoin;
 
 /**
  * SnakeAndLadderController.java
@@ -25,36 +26,41 @@ import static org.example.snakeandladdergame.impl.Game.startGame;
 @RestController
 public class SnakeAndLadderController
 {
-    private static boolean gameStarted = false;
+
+    private static boolean gameOver = false;
+
+    private static int numberOfPlayersConst = 2;
 
     private static List<StringBuilder> stringBuilders = new ArrayList<>();
 
     @GetMapping("/")
     public ModelAndView home()
     {
-        System.out.println("called home ...");
+        gameOver = false;
+        numberOfPlayersConst = 2;
         return new ModelAndView("index");
     }
 
     @GetMapping("/selectNumberOfPlayers")
     public ModelAndView selectNumberOfPlayers(@RequestParam int numberOfPlayers, Model model)
     {
-        initailizePlayers(numberOfPlayers);
-        if (!gameStarted)
-        {
-            SnakeAndLadder[][] snakeAndLadders = startGame(5, 5);
-            stringBuilders = Utils.loadSnakeAndLadderBoard(snakeAndLadders,numberOfPlayers);
-        }
+        numberOfPlayersConst = numberOfPlayers;
+        initializePlayerAndBoard(numberOfPlayers);
         model.addAttribute("snakeAndLadderHtml", stringBuilders.get(0).toString());
         model.addAttribute("ladderAndSnakeHtml", stringBuilders.get(1).toString());
-        gameStarted = true;
         return new ModelAndView("snakeAndLadder");
     }
+
 
     @GetMapping("/rotateDize")
     public Player rotateDize(@RequestParam int result,@RequestParam int playerNum)
     {
-        System.out.println("result got = " + result + " playerNum = " + playerNum);
+        if (gameOver)
+        {
+            Player player = new  Player();
+            player.setPlayerPosition(100);
+            return player;
+        }
 
         Player player = Game.rotateDize(playerNum, result);
 
@@ -64,28 +70,32 @@ public class SnakeAndLadderController
             return new Player();
         }
 
-        if (player.getPlayerPosition() > 99)
-        {
-            System.out.println("\n\n ##########################################################################################");
-            System.out.println(" #                          $$$$ < * Game over * > $$$$                                   #");
-            System.out.println(" ##########################################################################################\n \n");
-            System.out.println(" ( $$##$$ ) < " + player.getPlayerName() + " is winner !!! > ( $$##$$ )");
-            return player;
-        }
-        System.out.println(" ### player " + playerNum + " :: From = " + player.getPlayerFromPosition() + " :: ToPostion =  " + player.getPlayerPosition());
         return player;
     }
 
     @RequestMapping(value = "/GameOver", method = { RequestMethod.GET, RequestMethod.POST })
-    public ModelAndView gameOver(@RequestParam String player, Model model) {
-        model.addAttribute("player", "player_" + player + "win");
+    public ModelAndView gameOver(@RequestParam String player, Model model)
+    {
+        gameOver = true;
+        model.addAttribute("player",  player);
         return new ModelAndView("winningPage");
     }
 
     @RequestMapping("/restart")
-    private ModelAndView restartGame()
+    private ModelAndView restartGame(Model model)
     {
-        gameStarted = false;
-        return new ModelAndView("index");
+        gameOver = false;
+        initializePlayerAndBoard(numberOfPlayersConst);
+        model.addAttribute("snakeAndLadderHtml", stringBuilders.get(0).toString());
+        model.addAttribute("ladderAndSnakeHtml", stringBuilders.get(1).toString());
+        return new ModelAndView("snakeAndLadder");
     }
+
+    private static void initializePlayerAndBoard(int numberOfPlayers) {
+        initailizePlayers(numberOfPlayers);
+        SnakeAndLadder[][] snakeAndLadders = startGame(5, 5);
+        stringBuilders = Utils.loadSnakeAndLadderBoard(snakeAndLadders, numberOfPlayers);
+    }
+
 }
+

@@ -1,55 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Popup Test</title>
-    <style>
-        .popup {
-            display: flex;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .popup-content {
-            width: 500px;
-            height: 300px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-<div id="popup" class="popup">
-    <div class="popup-content">
-        <span class="close">&times;</span>
-        <div class="winning" th:utext="${player}"></div>
-        <form action="/restart">
-            <button type="submit" class="btn btn-primary">RESTART</button>
-        </form>
-    </div>
+<div>
+    <div class="winning">PLAYER  <span th:utext="${player}" class="wpn"></span></div>
+    <div><img src="/images/trophy.png" alt="trophy"></div>
+    <div><img src="/images/winner.png" alt="winner"></div>
 </div>
-<script src="/static/js/winning.js"></script>
-</body>
-</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var closeBtn = document.querySelector(".close");
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", function () {
+                document.getElementById('popup').style.display = 'none';
+            });
+
+            window.addEventListener("click", function (event) {
+                if (event.target === document.getElementById('popup')) {
+                    document.getElementById('popup').style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
