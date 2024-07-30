@@ -4,6 +4,7 @@ import org.example.snakeandladdergame.models.SnakeAndLadder;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -106,20 +107,19 @@ public class Utils
     {
         StringBuilder coins = new StringBuilder();
 
-        String colour = "yellow";
+        List<String> colours = new ArrayList<>(Arrays.asList("yellow","#06f6f6","green","orange","blue","purple","gray"));
 
         for (int i = 1; i <= numberOfPlayers; i++)
         {
-            if (i == 2) {
-                colour = "#06f6f6";
-            }
-            if (i == 3) {
-                colour = "green";
-            }
+            int i1 = generateRandomIndex(0, colours.size() - 1);
+
+            String colour = colours.get(i1);
 
             String clr = "color: " + colour + ";";
 
-            coins.append(String.format("<i class=\"fa-solid fa-user\" style=\"%s\" id=\"%s\"></i>", clr, "coin_" + i));
+            colours.remove(colour);
+
+            coins.append(String.format("<i class=\"fa-solid fa-user\" style=\"%s\" id=\"%s\"><span class=\"user-number\">%s</span></i>", clr, "coin_" + i, i));
 
         }
 

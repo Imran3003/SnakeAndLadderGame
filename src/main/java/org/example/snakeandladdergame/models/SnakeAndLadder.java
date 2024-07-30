@@ -13,15 +13,9 @@ public class SnakeAndLadder
     private boolean snakeIsPresent;
     private boolean ladderIsPresent;
     private int toPosition;
+    private boolean isAlreadyToPosition;
 
     public SnakeAndLadder() {
-    }
-
-    public SnakeAndLadder(int position, boolean snakeIsPresent, boolean ladderIsPresent, int toPosition) {
-        this.position = position;
-        this.snakeIsPresent = snakeIsPresent;
-        this.ladderIsPresent = ladderIsPresent;
-        this.toPosition = toPosition;
     }
 
     public int getPosition() {
@@ -56,6 +50,14 @@ public class SnakeAndLadder
         this.toPosition = toPosition;
     }
 
+    public boolean isAlreadyToPosition() {
+        return isAlreadyToPosition;
+    }
+
+    public void setAlreadyToPosition(boolean alreadyToPosition) {
+        isAlreadyToPosition = alreadyToPosition;
+    }
+
     @Override
     public String toString() {
         return "SnakeAndLadder{" +
@@ -63,6 +65,7 @@ public class SnakeAndLadder
                 ", snakeIsPresent=" + snakeIsPresent +
                 ", ladderIsPresent=" + ladderIsPresent +
                 ", toPosition=" + toPosition +
+                ", isAlreadyToPosition=" + isAlreadyToPosition +
                 '}';
     }
 }

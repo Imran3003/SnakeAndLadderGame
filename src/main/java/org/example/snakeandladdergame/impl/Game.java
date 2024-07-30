@@ -18,15 +18,12 @@ import static org.example.snakeandladdergame.utils.Utils.generateRandomIndex;
  */
 public class Game
 {
-    private static  SnakeAndLadder[][] snakeAndLadders = new SnakeAndLadder[10][10];
+    private static  final SnakeAndLadder[][] snakeAndLadders  = new SnakeAndLadder[10][10];
 
-    private static  List<Player> players = new ArrayList<>();
+    private static  final List<Player> players = new ArrayList<>();
 
     public static SnakeAndLadder[][] startGame(int laddersCount,int snakeCount)
     {
-        if (snakeAndLadders.length == 0)
-            snakeAndLadders  = new SnakeAndLadder[10][10];
-
         generateSnakeAndLadderBoard(laddersCount,snakeCount);
         return snakeAndLadders;
     }
@@ -151,7 +148,7 @@ public class Game
             SnakeAndLadder snakeAndLadderPiece = snakeAndLadders[randomPos][randomPos1];
             boolean ladderIsPresent = snakeAndLadderPiece.isLadderIsPresent();
 
-            if (!ladderIsPresent || snakeAndLadderPiece.getToPosition() == 0)
+            if (!ladderIsPresent && !snakeAndLadderPiece.isAlreadyToPosition())
             {
                 snakeAndLadderPiece.setLadderIsPresent(true);
 
@@ -162,10 +159,11 @@ public class Game
                 {
                     randomCount = randomPos > 1 ? generateRandomIndex(0,randomPos - 1) : 0;
                     randomCount1 = generateRandomIndex(0, 9);
-                } while (snakeAndLadders[randomCount][randomCount1].isLadderIsPresent() || snakeAndLadders[randomPos][randomCount1].getToPosition() == 100);
+                } while (snakeAndLadders[randomCount][randomCount1].isLadderIsPresent() || snakeAndLadders[randomCount][randomCount1].isAlreadyToPosition() || snakeAndLadders[randomCount][randomCount1].getPosition() == 100);
 
                 SnakeAndLadder gotSnL = snakeAndLadders[randomCount][randomCount1];
                 snakeAndLadderPiece.setToPosition(gotSnL.getPosition());
+                gotSnL.setAlreadyToPosition(true);
                 lc++;
             }
 
@@ -185,7 +183,7 @@ public class Game
             SnakeAndLadder snakeAndLadderPiece = snakeAndLadders[randomPos][randomPos1];
             boolean ladderIsPresent = snakeAndLadderPiece.isLadderIsPresent();
 
-            if (!ladderIsPresent && !snakeAndLadderPiece.isSnakeIsPresent()) {
+            if (!ladderIsPresent && !snakeAndLadderPiece.isSnakeIsPresent() && !snakeAndLadderPiece.isAlreadyToPosition()) {
                 snakeAndLadderPiece.setSnakeIsPresent(true);
 
                 int randomCount;
@@ -194,11 +192,12 @@ public class Game
                 do {
                     int tp = randomPos + 1;
                     randomCount = generateRandomIndex(tp, 9);
-                    randomCount1 = generateRandomIndex(1, 9);
-                } while (snakeAndLadders[randomCount][randomCount1].isSnakeIsPresent());
+                    randomCount1 = generateRandomIndex(0, 9);
+                } while (snakeAndLadders[randomCount][randomCount1].isSnakeIsPresent() || snakeAndLadders[randomCount][randomCount1].isAlreadyToPosition() || snakeAndLadders[randomCount][randomCount1].isLadderIsPresent() || snakeAndLadders[randomCount][randomCount1].getPosition() == 1);
 
                 SnakeAndLadder gotSnL = snakeAndLadders[randomCount][randomCount1];
                 snakeAndLadderPiece.setToPosition(gotSnL.getPosition());
+                gotSnL.setAlreadyToPosition(true);
                 sc++;
 
             }

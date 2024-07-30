@@ -45,7 +45,40 @@ i
 .fa-user::before {
     -webkit-text-stroke: 2px black; /* Border thickness and color */
 }
+
 .fa-user
 {
     z-index: 5;
+}
+
+i.fa-solid.fa-user {
+    position: relative; /* Needed to position the span absolutely within this element */
+    display: inline-block;
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    line-height: 40px; /* Aligns the icon vertically */
+    text-align: center; /* Aligns the content horizontally */
+    font-size: 24px; /* Adjust the icon size */
+}
+
+.user-number {
+    position: absolute;
+    bottom: 50%; /* Position the number above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px; /* Adjust the size of the number */
+    color: #000; /* Adjust the color as needed */
+    font-weight: bold;
+    font-family: C059, serif;
+    font-stretch: extra-condensed;
+    font-style: italic;
+    text-shadow:
+            -1px -1px 0 #000,
+            1px -1px 0 #07f807,
+            -1px  1px 0 #07f807,
+            1px  1px 0 #07f807,
+            -1px  0   0 #07f807,
+            1px  0   0 #07f807,
+            0   -1px 0 #07f807,
+            0    1px 0 #07f807;
 }

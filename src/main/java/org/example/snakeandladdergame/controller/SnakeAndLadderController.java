@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.example.snakeandladdergame.impl.Game.initailizePlayers;
@@ -44,6 +45,9 @@ public class SnakeAndLadderController
     @GetMapping("/selectNumberOfPlayers")
     public ModelAndView selectNumberOfPlayers(@RequestParam int numberOfPlayers, Model model)
     {
+        if (numberOfPlayers < 2 || numberOfPlayers > 5)
+            return new ModelAndView("index");
+
         numberOfPlayersConst = numberOfPlayers;
         initializePlayerAndBoard(numberOfPlayers);
         model.addAttribute("snakeAndLadderHtml", stringBuilders.get(0).toString());
@@ -65,10 +69,7 @@ public class SnakeAndLadderController
         Player player = Game.rotateDize(playerNum, result);
 
         if (player == null)
-        {
-            System.out.println("player is null");
             return new Player();
-        }
 
         return player;
     }
@@ -94,6 +95,7 @@ public class SnakeAndLadderController
     private static void initializePlayerAndBoard(int numberOfPlayers) {
         initailizePlayers(numberOfPlayers);
         SnakeAndLadder[][] snakeAndLadders = startGame(5, 5);
+        System.out.println("snakeAndLadders = " + Arrays.deepToString(snakeAndLadders));
         stringBuilders = Utils.loadSnakeAndLadderBoard(snakeAndLadders, numberOfPlayers);
     }
 
