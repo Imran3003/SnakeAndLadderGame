@@ -48,6 +48,7 @@ async function diceClick() {
 
         if (response.playerFromPosition === 0 && response.playerPosition === 0 && response.playerName === null) {
             console.log("Player position > 100");
+            player++
             return;
         }
 
