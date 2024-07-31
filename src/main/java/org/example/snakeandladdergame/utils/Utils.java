@@ -107,7 +107,7 @@ public class Utils
     {
         StringBuilder coins = new StringBuilder();
 
-        List<String> colours = new ArrayList<>(Arrays.asList("yellow","#06f6f6","green","orange","blue","purple","gray"));
+        List<String> colours = new ArrayList<>(Arrays.asList("aqua","aquamarine","white","#919101","darkmagenta","maroon","#07f807"));
 
         for (int i = 1; i <= numberOfPlayers; i++)
         {

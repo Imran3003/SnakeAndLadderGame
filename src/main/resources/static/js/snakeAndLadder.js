@@ -58,11 +58,6 @@ async function diceClick() {
             return;
         }
 
-        if (toValue  === 100) {
-            gameOver(player);
-            return;
-        }
-
         let coin = document.getElementById(`coin_${player}`);
         if (!coin) {
             console.error(`Element with ID coin_${player} not found`);
@@ -86,6 +81,12 @@ async function diceClick() {
         setTimeout(() => {
             toPosition.appendChild(coin);
         }, 900);
+
+        if (toValue  === 100)
+        {
+            gameOver(player);
+            return;
+        }
 
         player++;
     }, 1500);
